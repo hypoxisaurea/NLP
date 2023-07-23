@@ -15,8 +15,8 @@ from tensorflow.python.keras.layers import Embedding, LSTM, Dense
 from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping
 
 #----------- 데이터 삽입 --------------
-train = pd.read_table("ratings_train.txt")
-test = pd.read_table("ratings_test.txt")
+train = pd.read_table("/content/ratings_train.txt")
+test = pd.read_table("/content/ratings_test.txt")
 
 print('학습 데이터 전체 개수: {}'.format(len(train)))
 print('시험 데이터 전체 개수: {}'.format(len(test)))
