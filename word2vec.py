@@ -1,18 +1,10 @@
-from collections import Counter
-from typing import re
-
-import tensorflow as tf
 import pandas as pd
 import numpy as np
-from tensorflow.python.keras.models import load_model
 
 from tqdm import tqdm
 from konlpy.tag import Okt
 from keras.src.utils import pad_sequences
 from keras.src.preprocessing.text import Tokenizer
-from tensorflow.python.keras import Sequential
-from tensorflow.python.keras.layers import Embedding, LSTM, Dense
-from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping
 
 #----------- 데이터 삽입 --------------
 train = pd.read_table("/content/ratings_train.txt")
