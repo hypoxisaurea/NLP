@@ -3,8 +3,8 @@ import numpy as np
 
 from tqdm import tqdm
 from konlpy.tag import Okt
-from keras.src.utils import pad_sequences
-from keras.src.preprocessing.text import Tokenizer
+from keras.utils import pad_sequences
+from keras.preprocessing.text import Tokenizer
 
 #----------- 데이터 삽입 --------------
 train = pd.read_table("/content/ratings_train.txt")
