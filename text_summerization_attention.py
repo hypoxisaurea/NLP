@@ -1,17 +1,14 @@
 import re
 import nltk
-import urllib
 import numpy as np
 import pandas as pd
 
 from bs4 import BeautifulSoup
-from matplotlib import pyplot as plt
 from nltk.corpus import stopwords
-from tensorflow.python.keras.callbacks import EarlyStopping
-
 from keras.utils import pad_sequences
 from keras.preprocessing.text import Tokenizer
 from tensorflow.python.keras import Input, Model
+from tensorflow.python.keras.callbacks import EarlyStopping
 from tensorflow.python.keras.layers import LSTM, Embedding, Dense, Concatenate
 
 #----------- 데이터 삽입 --------------
