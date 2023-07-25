@@ -1,14 +1,14 @@
 import pandas as pd
 import numpy as np
+from keras.preprocessing.text import Tokenizer
 
 from tqdm import tqdm
 from konlpy.tag import Okt
 from keras.utils import pad_sequences
-from keras.preprocessing.text import Tokenizer
 
 #----------- 데이터 삽입 --------------
-train = pd.read_table("/content/ratings_train.txt")
-test = pd.read_table("/content/ratings_test.txt")
+train = pd.read_table("content/ratings_train.txt")
+test = pd.read_table("content/ratings_test.txt")
 
 print('학습 데이터 전체 개수: {}'.format(len(train)))
 print('시험 데이터 전체 개수: {}'.format(len(test)))
@@ -17,12 +17,12 @@ print('시험 데이터 전체 개수: {}'.format(len(test)))
 train.drop_duplicates(subset=['document'], inplace=True) #중복제거
 test.drop_duplicates(subset=['document'], inplace=True) #중복제거
 
-train['document'] = train['document'].str.replace("[^ㄱ-ㅎㅏ-ㅣ가-힣 ]","")
-train['document'] = train['document'].str.replace('^ +', "")
+train['document'] = train['document'].str.replace("[^ㄱ-ㅎㅏ-ㅣ가-힣 ]","", regex=True)
+train['document'] = train['document'].str.replace('^ +', "", regex=True)
 train['document'].replace('', np.nan, inplace=True)
 
-test['document'] = test['document'].str.replace("[^ㄱ-ㅎㅏ-ㅣ가-힣 ]","")
-test['document'] = test['document'].str.replace('^ +', "")
+test['document'] = test['document'].str.replace("[^ㄱ-ㅎㅏ-ㅣ가-힣 ]","", regex=True)
+test['document'] = test['document'].str.replace('^ +', "", regex=True)
 test['document'].replace('', np.nan, inplace=True)
 
 train = train.dropna(how = 'any') #Null값 제거
@@ -75,9 +75,14 @@ tokenizer = Tokenizer(vocab_size)
 tokenizer.fit_on_texts(X_train)
 X_train = tokenizer.texts_to_sequences(X_train)
 X_test = tokenizer.texts_to_sequences(X_test)
+y_train = np.array(train['label'], dtype=object)
+y_test = np.array(test['label'], dtype=object)
 
-y_train = np.array(train['label'])
-y_test = np.array(test['label'])
+#----------- 빈 샘플 제거 --------------
+empty_samples_train = [index for index, sentence in enumerate(X_train) if len(sentence) == 0]
+X_train = np.delete(X_train, empty_samples_train, axis=0)
+
+print('\n빈 샘플 제거 후 데이터 전체 개수: {}'.format(len(X_train)))
 
 #----------- 패딩 --------------
 print('리뷰의 최대 길이 :',max(len(review) for review in X_train))
@@ -95,11 +100,3 @@ below_threshold_len(max_len, X_train)
 
 X_train = pad_sequences(X_train, maxlen=max_len)
 X_test = pad_sequences(X_test, maxlen=max_len)
-
-#----------- 빈 샘플 제거 --------------
-drop_train = [index for index, sentence in enumerate(X_train) if len(sentence) < 1]
-X_train = np.delete(X_train, drop_train, axis=0)
-y_train = np.delete(y_train, drop_train, axis=0)
-
-print('\n빈 샘플 제거 후 데이터 전체 개수: {}'.format(len(X_train)))
-print('빈 샘플 제거 후 데이터 전체 개수: {}'.format(len(y_train)))
