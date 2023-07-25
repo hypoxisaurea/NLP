@@ -250,14 +250,6 @@ decoder_target_train = tar_tokenizer.texts_to_sequences(decoder_target_train)
 decoder_input_test = tar_tokenizer.texts_to_sequences(decoder_input_test)
 decoder_target_test = tar_tokenizer.texts_to_sequences(decoder_target_test)
 
-#----------- 패딩 --------------
-encoder_input_train = pad_sequences(encoder_input_train, maxlen = text_max_len, padding='post')
-encoder_input_test = pad_sequences(encoder_input_test, maxlen = text_max_len, padding='post')
-decoder_input_train = pad_sequences(decoder_input_train, maxlen = summary_max_len, padding='post')
-decoder_target_train = pad_sequences(decoder_target_train, maxlen = summary_max_len, padding='post')
-decoder_input_test = pad_sequences(decoder_input_test, maxlen = summary_max_len, padding='post')
-decoder_target_test = pad_sequences(decoder_target_test, maxlen = summary_max_len, padding='post')
-
 #----------- 빈 샘플 제거 --------------
 drop_train = [index for index, sentence in enumerate(decoder_input_train) if len(sentence) == 1]
 drop_test = [index for index, sentence in enumerate(decoder_input_test) if len(sentence) == 1]
@@ -269,6 +261,14 @@ decoder_target_train = np.delete(decoder_target_train, drop_train, axis=0)
 encoder_input_test = np.delete(encoder_input_test, drop_test, axis=0)
 decoder_input_test = np.delete(decoder_input_test, drop_test, axis=0)
 decoder_target_test = np.delete(decoder_target_test, drop_test, axis=0)
+
+#----------- 패딩 --------------
+encoder_input_train = pad_sequences(encoder_input_train, maxlen = text_max_len, padding='post')
+encoder_input_test = pad_sequences(encoder_input_test, maxlen = text_max_len, padding='post')
+decoder_input_train = pad_sequences(decoder_input_train, maxlen = summary_max_len, padding='post')
+decoder_target_train = pad_sequences(decoder_target_train, maxlen = summary_max_len, padding='post')
+decoder_input_test = pad_sequences(decoder_input_test, maxlen = summary_max_len, padding='post')
+decoder_target_test = pad_sequences(decoder_target_test, maxlen = summary_max_len, padding='post')
 
 #----------- 모델링 --------------
 embedding_dim = 128
