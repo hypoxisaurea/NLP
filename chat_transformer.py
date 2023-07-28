@@ -31,9 +31,6 @@ sample_string = questions[20]
 tokenized_string = tokenizer.encode(sample_string)
 original_string = tokenizer.decode(tokenized_string)
 
-MAX_LENGTH = 40
-
-
 def tokenize_and_filter(inputs, outputs):
     tokenized_inputs, tokenized_outputs = [], []
 
@@ -43,13 +40,10 @@ def tokenize_and_filter(inputs, outputs):
         tokenized_inputs.append(sentence1)
         tokenized_outputs.append(sentence2)
 
-    tokenized_inputs = tf.keras.preprocessing.sequence.pad_sequences(tokenized_inputs, maxlen=MAX_LENGTH,
-                                                                     padding='post')
-    tokenized_outputs = tf.keras.preprocessing.sequence.pad_sequences(tokenized_outputs, maxlen=MAX_LENGTH,
-                                                                      padding='post')
+    tokenized_inputs = tf.keras.preprocessing.sequence.pad_sequences(tokenized_inputs, maxlen=MAX_LENGTH, padding='post')
+    tokenized_outputs = tf.keras.preprocessing.sequence.pad_sequences(tokenized_outputs, maxlen=MAX_LENGTH, padding='post')
 
     return tokenized_inputs, tokenized_outputs
-
 
 questions, answers = tokenize_and_filter(questions, answers)
 
@@ -115,7 +109,6 @@ def preprocess_sentence(sentence):
     sentence = sentence.strip()
     return sentence
 
-
 def evaluate(sentence):
     sentence = preprocess_sentence(sentence)
     sentence = tf.expand_dims(START_TOKEN + tokenizer.encode(sentence) + END_TOKEN, axis=0)
@@ -132,7 +125,6 @@ def evaluate(sentence):
 
     return tf.squeeze(output, axis=0)
 
-
 def predict(sentence):
     prediction = evaluate(sentence)
     predicted_sentence = tokenizer.decode([i for i in prediction if i < tokenizer.vocab_size])
@@ -141,7 +133,6 @@ def predict(sentence):
     print('Output: {}'.format(predicted_sentence))
 
     return predicted_sentence
-
 
 output = predict("영화 볼래?")
 output = predict("고민이 있어")
