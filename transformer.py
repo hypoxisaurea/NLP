@@ -3,6 +3,7 @@ import tensorflow as tf
 from matplotlib import pyplot as plt
 from tensorflow.python.keras.layers import Dense
 
+MAX_LENGTH = 40
 
 class PositionalEncoding(tf.keras.layers.Layer):
   def __init__(self, position, d_model):
