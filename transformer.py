@@ -1,7 +1,6 @@
 import numpy as np
 import tensorflow as tf
 from matplotlib import pyplot as plt
-from tensorflow.python.keras.layers import Dense
 
 MAX_LENGTH = 40
 
